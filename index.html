@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Manajemen Kost Zamrud</title>
+
+    <!-- Bootstrap 5 CSS untuk UI yang modern dan responsif -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome untuk Ikon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- SweetAlert2 CSS untuk Notifikasi Pop-up -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    />
+
+    <style>
+      body {
+        background-color: #f4f6f9;
+      }
+      .sidebar {
+        min-height: 100vh;
+        background-color: #2c3e50;
+        color: white;
+      }
+      .sidebar a {
+        color: #ecf0f1;
+        text-decoration: none;
+        padding: 15px;
+        display: block;
+        transition: 0.3s;
+      }
+      .sidebar a:hover {
+        background-color: #34495e;
+        border-left: 4px solid #3498db;
+      }
+      .sidebar .active {
+        background-color: #34495e;
+        border-left: 4px solid #3498db;
+        font-weight: bold;
+      }
+      .card-stats {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .icon-lg {
+        font-size: 2.5rem;
+        opacity: 0.3;
+      }
+      .table-responsive {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar Navigation -->
+        <div class="col-md-2 sidebar p-0">
+          <h4 class="text-center py-4 border-bottom">Kost Zamrud</h4>
+          <a href="#" class="active"
+            ><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a
+          >
+          <a href="#"><i class="fas fa-bed me-2"></i> Kamar & Penghuni</a>
+          <a href="#"><i class="fas fa-wallet me-2"></i> Pembayaran</a>
+          <a href="#"><i class="fas fa-file-alt me-2"></i> Laporan</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10 p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Dashboard Overview</h2>
+            <div>
+              <button class="btn btn-outline-primary" onclick="cekJatuhTempo()">
+                <i class="fas fa-bell"></i> Cek Notifikasi
+              </button>
+              <img
+                src="https://ui-avatars.com/api/?name=Admin+Zamrud&background=0D8ABC&color=fff"
+                alt="Admin"
+                class="rounded-circle ms-3"
+                width="40"
+              />
+            </div>
+          </div>
+
+          <!-- Card UI untuk Ringkasan Data -->
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="card card-stats bg-primary text-white p-3">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h5>Total Kamar</h5>
+                    <h3>20</h3>
+                  </div>
+                  <i class="fas fa-door-closed icon-lg"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-stats bg-success text-white p-3">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h5>Kamar Terisi</h5>
+                    <h3>18</h3>
+                  </div>
+                  <i class="fas fa-user-check icon-lg"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-stats bg-warning text-white p-3">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h5>Kamar Kosong</h5>
+                    <h3>2</h3>
+                  </div>
+                  <i class="fas fa-door-open icon-lg"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-stats bg-info text-white p-3">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h5>Total Penghuni</h5>
+                    <h3>18</h3>
+                  </div>
+                  <i class="fas fa-users icon-lg"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Table Kamar & Penghuni -->
+          <div class="table-responsive">
+            <h5 class="mb-3">Status Pembayaran Terkini</h5>
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>No Kamar</th>
+                  <th>Nama Penghuni</th>
+                  <th>Tanggal Masuk</th>
+                  <th>Jatuh Tempo</th>
+                  <th>Status Pembayaran</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>101</td>
+                  <td>Budi Santoso</td>
+                  <td>01 Jan 2026</td>
+                  <td>01 Sep 2026</td>
+                  <td><span class="badge bg-success">Lunas</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-primary">Detail</button>
+                  </td>
+                </tr>
+                <tr class="table-danger">
+                  <!-- Baris disorot merah untuk yang menunggak -->
+                  <td>102</td>
+                  <td>Andi Wirawan</td>
+                  <td>05 Feb 2026</td>
+                  <td>05 Sep 2026</td>
+                  <td>
+                    <span class="badge bg-danger">Menunggak (6 Hari)</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-warning">
+                      <i class="fas fa-comment-dots"></i> Tagih
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>103</td>
+                  <td>Siti Aisyah</td>
+                  <td>10 Mar 2026</td>
+                  <td>10 Sep 2026</td>
+                  <td>
+                    <span class="badge bg-warning text-dark"
+                      >Jatuh Tempo Besok</span
+                    >
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-primary">Detail</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script Bootstrap & SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.css"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      // Fungsi untuk memunculkan notifikasi SweetAlert saat halaman dimuat
+      function cekJatuhTempo() {
+        Swal.fire({
+          title: "Peringatan Jatuh Tempo!",
+          html: "Terdapat <b>1 penghuni</b> yang menunggak pembayaran (Kamar 102 - Andi) dan <b>1 penghuni</b> yang jatuh tempo besok (Kamar 103 - Siti).",
+          icon: "warning",
+          confirmButtonText: "Cek Data Pembayaran",
+          confirmButtonColor: "#d33",
+        });
+      }
+
+      // Otomatis jalankan fungsi notifikasi setelah halaman selesai dimuat
+      document.addEventListener("DOMContentLoaded", function () {
+        // Memberi delay 1 detik agar efeknya lebih terasa
+        setTimeout(cekJatuhTempo, 1000);
+      });
+    </script>
+  </body>
+</html>
