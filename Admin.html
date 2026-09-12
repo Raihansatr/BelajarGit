@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kost Zamrud — Sistem Manajemen Kos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <path d="M9 6H25L30 13L17 30L4 13L9 6Z" fill="url(#gemGrad)" stroke="#EFD9A0" stroke-width="0.75"/>
+        <path d="M9 6L13 13H21L25 6" stroke="#F2E6C4" stroke-width="0.75" stroke-linejoin="round"/>
+        <path d="M4 13H30" stroke="#F2E6C4" stroke-width="0.6"/>
+        <path d="M13 13L17 30L21 13" stroke="#F2E6C4" stroke-width="0.6"/>
+        <defs>
+          <linearGradient id="gemGrad" x1="4" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#3FCB9B"/>
+            <stop offset="1" stop-color="#0E4A3B"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div>
+        <div class="brand-name">Kost Zamrud</div>
+        <div class="brand-tag">Sistem manajemen kos</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-page="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="12" width="8" height="9" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-item" data-page="kamar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-7h6v7"/></svg>
+        Kamar &amp; Penghuni
+      </button>
+      <button class="nav-item" data-page="pembayaran">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10H22"/><path d="M6 15H10"/></svg>
+        Pembayaran
+      </button>
+      <button class="nav-item" data-page="laporan">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
+        Laporan
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="occ-label">Tingkat hunian</div>
+      <div class="occ-bar"><div class="occ-fill" style="width:90%"></div></div>
+      <div class="occ-value">90%</div>
+      <div class="occ-sub">18 dari 20 kamar terisi</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" id="hamburgerBtn" aria-label="Buka menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+        <div>
+          <h1 class="page-title" id="pageTitle">Dashboard</h1>
+          <div class="page-sub" id="pageSub">Sabtu, 12 September 2026</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" id="notifBtn" aria-label="Notifikasi">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="dot"></span>
+        </button>
+        <div class="notif-panel" id="notifPanel"></div>
+        <div class="avatar">AZ</div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ================= DASHBOARD ================= -->
+      <section class="page active" id="page-dashboard">
+
+        <div class="hero-grid">
+          <div class="hero-gauge">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="10"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#gaugeGrad)" stroke-width="10" stroke-linecap="round"
+                stroke-dasharray="314.159" stroke-dashoffset="31.4" transform="rotate(-90 60 60)"/>
+              <defs>
+                <linearGradient id="gaugeGrad" x1="0" y1="0" x2="120" y2="120">
+                  <stop stop-color="#EAC873"/>
+                  <stop offset="1" stop-color="#C9A24B"/>
+                </linearGradient>
+              </defs>
+              <text x="60" y="56" text-anchor="middle" font-family="Fraunces, serif" font-size="26" fill="#fff" font-weight="600">90%</text>
+              <text x="60" y="74" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.7)">terisi</text>
+            </svg>
+            <div class="gauge-label">Tingkat Hunian</div>
+            <div class="gauge-note">18 dari 20 kamar</div>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="stat-label">
+                <span class="stat-icon" style="background:var(--emerald-100); color:var(--emerald-700);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V8l9-5 9 5v13"/></svg>
+                </span>
+                Total Kamar
+              </div>
+              <div class="stat-value">20</div>
+              <div class="stat-note">2 lantai · 10 kamar / lantai</div>
+            </div>
+            <div class="hero-stat">
+              <div class="stat-label">
+                <span class="stat-icon" style="background:var(--emerald-100); color:var(--emerald-700);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                </span>
+                Kamar Terisi
+              </div>
+              <div class="stat-value">18</div>
+              <div class="stat-note">18 penghuni aktif</div>
+            </div>
+            <div class="hero-stat">
+              <div class="stat-label">
+                <span class="stat-icon" style="background:var(--gold-100); color:var(--gold-700);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                </span>
+                Kamar Kosong
+              </div>
+              <div class="stat-value">2</div>
+              <div class="stat-note">Kamar 106 &amp; 208</div>
+            </div>
+            <div class="hero-stat">
+              <div class="stat-label">
+                <span class="stat-icon" style="background:var(--emerald-100); color:var(--emerald-700);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                </span>
+                Total Penghuni
+              </div>
+              <div class="stat-value">18</div>
+              <div class="stat-note">Per 12 Sep 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="money-row">
+          <div class="money-card">
+            <div class="m-label">Terkumpul bulan ini</div>
+            <div class="m-value" style="color:var(--emerald-700);">Rp9.800.000</div>
+            <div class="money-bar"><div class="money-bar-fill" style="width:63%; background:var(--emerald-600);"></div></div>
+            <div class="m-note">63% dari target Rp15.650.000</div>
+          </div>
+          <div class="money-card">
+            <div class="m-label">Belum tertagih</div>
+            <div class="m-value" style="color:var(--clay-600);">Rp4.250.000</div>
+            <div class="money-bar"><div class="money-bar-fill" style="width:27%; background:var(--clay-600);"></div></div>
+            <div class="m-note">5 kamar menunggak pembayaran</div>
+          </div>
+          <div class="money-card">
+            <div class="m-label">Perlu tindak lanjut hari ini</div>
+            <div class="m-value" style="color:var(--gold-700);">7 kamar</div>
+            <div class="money-bar"><div class="money-bar-fill" style="width:39%; background:var(--gold-500);"></div></div>
+            <div class="m-note">Menunggak, jatuh tempo hari ini &amp; besok</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Perlu perhatian</h2>
+              <div class="sub">Kamar dengan tagihan menunggak atau jatuh tempo dalam waktu dekat</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" data-goto="pembayaran">Lihat semua pembayaran</button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th>Kamar</th><th>Penghuni</th><th>Jatuh Tempo</th><th>Status</th><th>Nominal</th><th></th></tr>
+              </thead>
+              <tbody id="attentionTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= KAMAR & PENGHUNI ================= -->
+      <section class="page" id="page-kamar">
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Peta kamar</h2>
+              <div class="sub">Tinjauan cepat kamar terisi dan kosong per lantai</div>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btnTambahPenghuni">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Tambah Penghuni
+            </button>
+          </div>
+          <div id="floorContainer"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Data penghuni</h2>
+              <div class="sub">Daftar lengkap seluruh kamar dan penghuni</div>
+            </div>
+            <div class="toolbar">
+              <div class="search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                <input class="field" id="kamarSearch" placeholder="Cari nama atau nomor kamar">
+              </div>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th>Kamar</th><th>Penghuni</th><th>No. HP</th><th>Tanggal Masuk</th><th>Tarif / bulan</th><th>Status</th><th></th></tr>
+              </thead>
+              <tbody id="kamarTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= PEMBAYARAN ================= -->
+      <section class="page" id="page-pembayaran">
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Riwayat &amp; status pembayaran</h2>
+              <div class="sub">Periode berjalan — September 2026</div>
+            </div>
+            <div class="toolbar">
+              <div class="search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                <input class="field" id="pembayaranSearch" placeholder="Cari nama atau nomor kamar">
+              </div>
+              <select class="field" id="pembayaranFilter" style="width:180px;">
+                <option value="semua">Semua status</option>
+                <option value="lunas">Lunas</option>
+                <option value="menunggak">Menunggak</option>
+                <option value="today">Jatuh tempo hari ini</option>
+                <option value="besok">Jatuh tempo besok</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th>Kamar</th><th>Penghuni</th><th>Tarif</th><th>Jatuh Tempo</th><th>Status</th><th>Tgl. Bayar</th><th>Metode</th><th></th></tr>
+              </thead>
+              <tbody id="pembayaranTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= LAPORAN ================= -->
+      <section class="page" id="page-laporan">
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Ringkasan periode</h2>
+              <div class="sub">September 2026</div>
+            </div>
+            <div class="toolbar">
+              <select class="field" id="laporanPeriode" style="width:190px;">
+                <option>September 2026</option>
+                <option>3 bulan terakhir</option>
+                <option>6 bulan terakhir</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" id="btnCetak">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+                Cetak
+              </button>
+              <button class="btn btn-gold btn-sm" id="btnUnduh">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 21h16"/></svg>
+                Unduh CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="k-label">Pemasukan bulan ini</div>
+              <div class="k-value" style="color:var(--emerald-700);">Rp9.800.000</div>
+              <div class="k-note">dari potensi Rp15.650.000</div>
+            </div>
+            <div class="kpi-card">
+              <div class="k-label">Total tertunggak</div>
+              <div class="k-value" style="color:var(--clay-600);">Rp4.250.000</div>
+              <div class="k-note">5 kamar belum membayar</div>
+            </div>
+            <div class="kpi-card">
+              <div class="k-label">Rata-rata hunian 6 bulan</div>
+              <div class="k-value" style="color:var(--gold-700);">85%</div>
+              <div class="k-note">Naik dari 80% di bulan April</div>
+            </div>
+          </div>
+
+          <h2 style="font-size:16px; margin-bottom:4px;">Tren pemasukan 6 bulan terakhir</h2>
+          <div class="sub" style="margin-bottom:6px;">Dalam Rupiah</div>
+          <div class="chart-wrap" id="chartWrap"></div>
+          <div class="legend">
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--emerald-600);"></span> Bulan selesai</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--gold-500);"></span> Bulan berjalan</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Rekap pembayaran — September 2026</h2>
+              <div class="sub">Data ini yang akan diekspor saat menekan "Unduh CSV"</div>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th>Kamar</th><th>Penghuni</th><th>Tarif</th><th>Status</th><th>Tgl. Bayar</th></tr>
+              </thead>
+              <tbody id="laporanTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Modal: tambah / edit penghuni -->
+<div class="modal-backdrop" id="penghuniModalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3 id="penghuniModalTitle">Tambah Penghuni</h3>
+        <div class="sub" id="penghuniModalSub">Isi data penghuni baru untuk kamar yang kosong</div>
+      </div>
+      <button class="modal-close" id="penghuniModalClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <form id="penghuniForm">
+      <div class="form-grid">
+        <div class="full">
+          <label class="field-label">Nama lengkap</label>
+          <input class="field" id="fNama" required placeholder="cth. Ahmad Fauzan">
+        </div>
+        <div>
+          <label class="field-label">Nomor kamar</label>
+          <select class="field" id="fKamar" required></select>
+        </div>
+        <div>
+          <label class="field-label">No. HP / WhatsApp</label>
+          <input class="field" id="fHp" required placeholder="08xx-xxxx-xxxx">
+        </div>
+        <div>
+          <label class="field-label">Tanggal masuk</label>
+          <input class="field" id="fMasuk" type="date" required>
+        </div>
+        <div>
+          <label class="field-label">Tarif per bulan (Rp)</label>
+          <input class="field" id="fTarif" type="number" required placeholder="800000">
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="penghuniCancel">Batal</button>
+        <button type="submit" class="btn btn-primary" id="penghuniSubmit">Simpan Penghuni</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: detail -->
+<div class="modal-backdrop" id="detailModalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3>Detail Kamar</h3>
+        <div class="sub" id="detailSub"></div>
+      </div>
+      <button class="modal-close" id="detailModalClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="detail-list" id="detailBody"></div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-ghost" id="detailCloseBtn">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
